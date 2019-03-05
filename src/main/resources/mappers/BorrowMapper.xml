@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.librarymanager.repository.BorrowMapper">
+
+    <resultMap id="booksResultMap" type="com.example.librarymanager.entity.BorrowBook">
+        <id property="borrowId" column="borrow_id"/>
+        <result property="userId" column="userId" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="b_id" column="b_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="borrowDate" column="borrow_date"  javaType="java.lang.String" jdbcType="VARCHAR"/>
+
+    </resultMap>
+
+
+
+
+
+
+    <insert id="saveBorrowBooks" parameterType="BorrowBook">
+        insert into library.borrow_books (user_id, b_id, borrow_date)values (#{userId},#{bId},#{borrowDate});
+    </insert>
+
+    <select id="listBorrowBooks" resultMap="booksResultMap">
+        select borrow_id,user_name,b_name,borrow_id
+        from library.borrow_books,library.users,library.books
+        where borrow_books.user_id = users.user_id
+          and borrow_books.b_id = books.b_id;
+    </select>
+
+
+</mapper>

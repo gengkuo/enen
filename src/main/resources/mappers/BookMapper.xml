@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.librarymanager.repository.BookMapper">
+
+    <resultMap id="bookResultMap" type="com.example.librarymanager.entity.Book">
+        <id property="bId" column="b_id"/>
+        <result property="bName" column="b_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="bAuthor" column="b_author" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="bType" column="b_type"  javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="bCollection" column="b_collection" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="bBorrow" column="b_borrow" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="bDate" column="b_date" javaType="java.time.LocalDate" jdbcType="DATE"/>
+        <result property="description" column="description" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <sql id="c1">
+        #{bName},#{bAuthor},#{bType},#{bCollection},#{bBorrow},#{bDate},#{description}
+    </sql>
+
+    <select id="selectAllBooks" resultMap="bookResultMap">
+        select * from library.books;
+    </select>
+
+    <insert id="saveBook" parameterType="Book">
+        insert into library.books(b_name,b_author,b_type,b_collection,b_borrow,b_date,description) values (<include refid="c1"/>);
+    </insert>
+
+    <select id="selectBooksByName" resultMap="bookResultMap">
+        select * from library.books where b_name like  "%"#{bName}"%" ;
+    </select>
+
+    <select id="findBookByName" resultMap="bookResultMap">
+        select * from library.books where b_name =  #{bName} ;
+    </select>
+
+
+
+    <update id="updateBook" parameterType="Book">
+        update library.books set library.books.b_borrow= #{bBorrow} - 1
+        where library.books.b_name = #{bName}
+    </update>
+
+
+</mapper>

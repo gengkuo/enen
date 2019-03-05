@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.librarymanager.repository.UserMapper">
+
+
+    <resultMap id="userResultMap" type="com.example.librarymanager.entity.Users">
+        <id property="userId" column="user_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="userName" column="user_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="userAge" column="user_age" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="userGender" column="user_gender"  typeHandler="org.apache.ibatis.type.EnumTypeHandler"/>
+        <result property="userPhone" column="user_Phone" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="userPwd" column="user_pwd" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="userCard" column="user_card" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <sql id="c1">
+        #{userName},#{userAge},#{userGender},#{userPhone},#{userPwd},#{userCard}
+    </sql>
+
+    <insert id="saveUser" parameterType="Users">
+        insert into users(user_name,user_age,user_gender,user_phone,user_pwd,user_card) values (<include refid="c1"/>);
+    </insert>
+
+    <select id="selectAllUsers" resultMap="userResultMap">
+        select * from users;
+    </select>
+
+    <select id="selectUserByName" resultMap="userResultMap" parameterType="java.lang.String">
+        select * from users where user_name= #{userName}
+    </select>
+</mapper>
